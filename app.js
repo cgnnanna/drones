@@ -3,6 +3,7 @@ const express = require("express");
 const droneRoute = require("./route/droneRoute");
 const httpStatus = require("./utils/httpStatus");
 const response = require("./utils/response");
+//const simpleDb = require("./config/simpleJsonDb");
 
 const app = express();
 app.use(express.json());
