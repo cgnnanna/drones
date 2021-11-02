@@ -1,0 +1,16 @@
+{
+    "yyyyyyyy": {
+        "serialNum": "yyyyyyyy",
+        "model": "Lightweight",
+        "batteryLevel": 30,
+        "state": "IDLE",
+        "weight": 100
+    },
+    "yyyyyyyyx": {
+        "serialNum": "yyyyyyyyx",
+        "model": "Lightweight",
+        "batteryLevel": 30,
+        "state": "IDLE",
+        "weight": 100
+    }
+}
