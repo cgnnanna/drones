@@ -1,10 +1,8 @@
 const validationsUtil = require("../utils/validationsUtil")
 const httpStatus = require("../utils/httpStatus");
 const response = require("../utils/response");
-const simpleJsonDb = require("../db/simpleJsonDb");
+const {saveDrone, getDronesByProperty} = require("../db/droneRepository");
 const droneState = require("../utils/state");
-
-const db = simpleJsonDb();
 
 const registerDrone = (req, res) => {
     const validations = validationsUtil(req, res);
@@ -35,25 +33,23 @@ const registerDrone = (req, res) => {
             break;
         }
     }
-    if(db.has(drone.serialNum)){
+    if(!saveDrone(drone)){
        return res.status(httpStatus.CONFLICT).json(response(false, "A drone already exists with this serial number"));
     }
-    db.set(drone.serialNum, drone);
     return res.json(response(true, null, drone));
 };
 
 const getAvailableDrones = (req, res) => {
-    const items = db.JSON();
-    const result = [];
-    for (const item in items){
-        if (items[item].state === droneState.IDLE){
-            result.push(items[item]);
-        } 
-    }
+    let result = getDronesByProperty("state", droneState.IDLE);
     return res.json(response(true, null, result));
+}
+
+const getDroneBatteryLevel = (req, res) => {
+
 }
 
 module.exports = {
     registerDrone,
-    getAvailableDrones
+    getAvailableDrones,
+    getDroneBatteryLevel
 }
