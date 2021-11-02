@@ -2,7 +2,7 @@ const validationsUtil = require("../utils/validationsUtil")
 const httpStatus = require("../utils/httpStatus");
 const response = require("../utils/response");
 const simpleJsonDb = require("../db/simpleJsonDb");
-const state = require("../utils/state");
+const droneState = require("../utils/state");
 
 const db = simpleJsonDb();
 
@@ -15,7 +15,7 @@ const registerDrone = (req, res) => {
         serialNum: req.body.serialNum,
         model: req.body.model,
         batteryLevel: Math.floor(req.body.batteryLevel),
-        state: state.IDLE
+        state: droneState.IDLE
     }
     switch(drone.model.toUpperCase()){
         case "LIGHTWEIGHT" : {
@@ -42,5 +42,18 @@ const registerDrone = (req, res) => {
     return res.json(response(true, null, drone));
 };
 
+const getAvailableDrones = (req, res) => {
+    const items = db.JSON();
+    const result = [];
+    for (const item in items){
+        if (items[item].state === droneState.IDLE){
+            result.push(items[item]);
+        } 
+    }
+    return res.json(response(true, null, result));
+}
 
-module.exports = registerDrone;
+module.exports = {
+    registerDrone,
+    getAvailableDrones
+}
