@@ -21,7 +21,12 @@ const getDronesByProperty = (property, value) => {
     return result;
 }
 
+const getDroneBySerialNum = (key) => {
+     return db.get(key);
+}
+
 module.exports = {
     saveDrone,
-    getDronesByProperty
+    getDronesByProperty,
+    getDroneBySerialNum
 }

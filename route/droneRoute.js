@@ -5,5 +5,6 @@ const droneValidation = require("../validation/droneValidation");
 
 router.post("/register", droneValidation("registerDrone"), registerDrone);
 router.get("/", getAvailableDrones);
+router.get("/batteryLevel/:serialNum", droneValidation("getDroneBatteryLevel"), getDroneBatteryLevel);
 
 module.exports = router;

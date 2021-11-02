@@ -1,8 +1,9 @@
 const validationsUtil = require("../utils/validationsUtil")
 const httpStatus = require("../utils/httpStatus");
 const response = require("../utils/response");
-const {saveDrone, getDronesByProperty} = require("../db/droneRepository");
+const {saveDrone, getDronesByProperty, getDroneBySerialNum} = require("../db/droneRepository");
 const droneState = require("../utils/state");
+const { get } = require("http");
 
 const registerDrone = (req, res) => {
     const validations = validationsUtil(req, res);
@@ -45,7 +46,15 @@ const getAvailableDrones = (req, res) => {
 }
 
 const getDroneBatteryLevel = (req, res) => {
-
+    const validations = validationsUtil(req, res);
+    if(validations){
+        return validations;
+    }
+   let result = getDroneBySerialNum(req.params.serialNum);
+   if(!result){
+       return res.status(httpStatus.NOT_FOUND).json(response(false, "No drone exists with the serialNum "));
+   }
+   return res.json(response(true, null, {batteryLevel : result.batteryLevel}));
 }
 
 module.exports = {

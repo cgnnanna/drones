@@ -11,6 +11,13 @@ const validate = (type) => {
                 check("batteryLevel").isFloat({min: 0, max: 100}).withMessage("batteryLevel should be a number between 0 and 100"),
             ];
         }
+        case "getDroneBatteryLevel" : {
+            return [
+                check("serialNum").notEmpty().withMessage("serialNum should not be empty")
+                .isAlphanumeric().withMessage("serialNum should be alphanumeric")
+                .isLength({ max: 100 }).withMessage("serialNum length should not be greater than 100 characters")
+            ];
+        }
     }
 
 }
