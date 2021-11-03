@@ -10,6 +10,13 @@ const medValidate = (type) => {
                 check("isLoaded").isBoolean().withMessage("isLoaded should be a valid boolean")
             ];
         }
+        case "getLoadedMed" : {
+            return[
+                check("serialNum").notEmpty().withMessage("serialNum should not be empty")
+                .isAlphanumeric().withMessage("serialNum should be alphanumeric")
+                .isLength({ max: 100 }).withMessage("serialNum length should not be greater than 100 characters")
+            ]
+        }
     }
 
 }

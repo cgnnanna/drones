@@ -46,7 +46,16 @@ const loadMed = (req, res) => {
     return res.status(httpStatus.BAD_REQUEST).json(response(false, "There was an error in loading your medication, please try again later."));
 }
 
+const getLoadedMed = (req, res) => {
+    let drone = getDroneBySerialNum(req.params.serialNum);
+    if(!drone){
+        return res.status(httpStatus.NOT_FOUND).json(response(false, "No drone exists with this serialNum"))
+    }
+    let loadedMed = getMedByDroneSerialNum(req.params.serialNum);
+    return res.json(response(true, null, loadedMed.meds));
+}
 
 module.exports = {
-    loadMed
+    loadMed,
+    getLoadedMed
 }
