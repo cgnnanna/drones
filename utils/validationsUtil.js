@@ -5,7 +5,7 @@ const response = require ("./response");
 const validation = (req, res) => {
     const errors = validationResult(req);
     if(errors && !errors.isEmpty()){
-        res.status(httpStatus.BAD_REQUEST).json(response(false, "An error occurred during validation, view the errors below", errors.array()))
+        return res.status(httpStatus.BAD_REQUEST).json(response(false, "An error occurred during validation, view the errors below", errors.array()))
     }
     return null;
 };

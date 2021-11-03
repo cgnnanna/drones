@@ -1,9 +1,8 @@
-const validationsUtil = require("../utils/validationsUtil")
+const validationsUtil = require("../utils/validationsUtil");
 const httpStatus = require("../utils/httpStatus");
 const response = require("../utils/response");
 const {saveDrone, getDronesByProperty, getDroneBySerialNum} = require("../db/droneRepository");
 const droneState = require("../utils/state");
-const { get } = require("http");
 
 const registerDrone = (req, res) => {
     const validations = validationsUtil(req, res);

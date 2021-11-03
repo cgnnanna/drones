@@ -1,15 +1,29 @@
 {
-    "yyyyyyyy": {
-        "serialNum": "yyyyyyyy",
-        "model": "Lightweight",
-        "batteryLevel": 30,
+    "123": {
+        "serialNum": "123",
+        "model": "LightWeight",
+        "batteryLevel": 50,
+        "state": "LOADING",
+        "weight": 100
+    },
+    "12367": {
+        "serialNum": "12367",
+        "model": "HeavyWeight",
+        "batteryLevel": 50,
+        "state": "IDLE",
+        "weight": 500
+    },
+    "123450": {
+        "serialNum": "123450",
+        "model": "LightWeight",
+        "batteryLevel": 40,
         "state": "IDLE",
         "weight": 100
     },
-    "yyyyyyyyx": {
-        "serialNum": "yyyyyyyyx",
-        "model": "Lightweight",
-        "batteryLevel": 30,
+    "123456y": {
+        "serialNum": "123456y",
+        "model": "LightWeight",
+        "batteryLevel": 40,
         "state": "IDLE",
         "weight": 100
     }

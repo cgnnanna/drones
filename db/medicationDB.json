@@ -1,0 +1,27 @@
+{
+    "123": {
+        "meds": [
+            {
+                "name": "yyyyy",
+                "weight": 10,
+                "code": "TTTTT"
+            },
+            {
+                "name": "yyyyy",
+                "weight": 10,
+                "code": "TTTTT"
+            },
+            {
+                "name": "yyyyy",
+                "weight": 10,
+                "code": "TTTTT"
+            },
+            {
+                "name": "yyyyy",
+                "weight": 30,
+                "code": "TTTTT"
+            }
+        ],
+        "totalWeight": 60
+    }
+}
