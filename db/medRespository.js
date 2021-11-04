@@ -11,9 +11,20 @@ const getMedByDroneSerialNum = (serialNum) => {
     return medObj ? medObj : {meds:[], totalWeight:0};
 }
 
+const updateMed = (serialNum) => {
+    let medObj = medDb.get(serialNum);
+    if (medObj) {
+        medDb.set(serialNum, medObj);
+        return true;
+    }
+    return false;
+}
+
+
 module.exports = {
     saveMed,
-    getMedByDroneSerialNum
+    getMedByDroneSerialNum, 
+    updateMed
 }
 
 

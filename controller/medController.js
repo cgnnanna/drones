@@ -2,8 +2,8 @@ const validationsUtil = require("../utils/validationsUtil")
 const httpStatus = require("../utils/httpStatus");
 const response = require("../utils/response");
 const droneState = require("../utils/state");
-const {getDroneBySerialNum, updateDrone } = require("../db/droneRepository");
-const { saveMed, getMedByDroneSerialNum } = require("../db/medRespository");
+const { getDroneBySerialNum, updateDrone } = require("../db/droneRepository");
+const { saveMed, getMedByDroneSerialNum, updateMed } = require("../db/medRespository");
 
 
 
@@ -19,27 +19,27 @@ const loadMed = (req, res) => {
         image: req.body.image
     }
     let drone = getDroneBySerialNum(req.params.serialNum);
-    if(drone.batteryLevel < 25){
+    if (drone.batteryLevel < 25) {
         return res.status(httpStatus.BAD_REQUEST).json(response(false, "drone's battery level is lower than 25%, please charge drone before you can use it."));
     }
-    if(drone.state.toUpperCase()!==droneState.IDLE && drone.state.toUpperCase()!==droneState.LOADING){
+    if (drone.state.toUpperCase() !== droneState.IDLE && drone.state.toUpperCase() !== droneState.LOADING) {
         return res.status(httpStatus.BAD_REQUEST).json(response(false, "drone is not available to load medication"));
     }
     let medObj = getMedByDroneSerialNum(drone.serialNum);
     let totalWeight = medObj.totalWeight + med.weight;
-    if(totalWeight > drone.weight){
-        return res.status(httpStatus.BAD_REQUEST).json(response(false, `the drone can only take medication of weight ${drone.weight-medObj.totalWeight}`));
+    if (totalWeight > drone.weight) {
+        return res.status(httpStatus.BAD_REQUEST).json(response(false, `the drone can only take medication of weight ${drone.weight - medObj.totalWeight}`));
     }
     medObj.meds.push(med);
     medObj.totalWeight = totalWeight;
-    if(drone.state===droneState.IDLE){
+    if (drone.state === droneState.IDLE) {
         drone.state = droneState.LOADING;
     }
-    if(drone.weight===totalWeight || req.body.isLoaded){
+    if (drone.weight === totalWeight || req.body.isLoaded) {
         console.log(totalWeight);
         drone.state = droneState.LOADED;
     }
-    if(updateDrone(drone)){
+    if (updateDrone(drone)) {
         saveMed(medObj, drone.serialNum);
         return res.json(response(true, null, med));
     }
@@ -48,14 +48,32 @@ const loadMed = (req, res) => {
 
 const getLoadedMed = (req, res) => {
     let drone = getDroneBySerialNum(req.params.serialNum);
-    if(!drone){
+    if (!drone) {
         return res.status(httpStatus.NOT_FOUND).json(response(false, "No drone exists with this serialNum"))
     }
     let loadedMed = getMedByDroneSerialNum(req.params.serialNum);
     return res.json(response(true, null, loadedMed.meds));
 }
 
+const deliverLoadedMed = (req, res) => {
+    let drone = getDroneBySerialNum(req.params.serialNum);
+    if (!drone) {
+        return res.status(httpStatus.NOT_FOUND).json(response(false, "No drone exists with this serialNum"));
+    }
+    let loadedMed = getMedByDroneSerialNum(drone.serialNum);
+    if (drone.state !== droneState.LOADED) {
+        return res.status(httpStatus.BAD_REQUEST).json(response(false, "drone cannot start delivery"))
+    }
+    drone.state = droneState.DELIVERING;
+    loadedMed.deliveryAddress = req.body.deliveryAddress;
+    updateMed(drone.serialNum);
+    updateDrone(drone);
+    //TODO: add countdown timer
+    return res.json(response(true, "the drone has started the delivery"));
+}
+
 module.exports = {
     loadMed,
-    getLoadedMed
+    getLoadedMed,
+    deliverLoadedMed
 }
