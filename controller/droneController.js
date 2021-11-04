@@ -2,7 +2,7 @@ const validationsUtil = require("../utils/validationsUtil");
 const httpStatus = require("../utils/httpStatus");
 const response = require("../utils/response");
 const { saveDrone, getDronesByProperty, getDroneBySerialNum, updateDrone } = require("../db/droneRepository");
-const { processTimeout } = require("./medController")
+const { getMedByDroneSerialNum, deleteLoadedMed, updateMed} = require("../db/medRespository");
 const droneState = require("../utils/state");
 
 const registerDrone = (req, res) => {
@@ -57,6 +57,24 @@ const getDroneBatteryLevel = (req, res) => {
     return res.json(response(true, null, { batteryLevel: result.batteryLevel }));
 }
 
+const deliverLoadedMed = (req, res) => {
+    let drone = getDroneBySerialNum(req.params.serialNum);
+    if (!drone) {
+        return res.status(httpStatus.NOT_FOUND).json(response(false, "No drone exists with this serialNum"));
+    }
+    if (drone.state !== droneState.LOADED) {
+        return res.status(httpStatus.BAD_REQUEST).json(response(false, "drone cannot start delivery"))
+    }
+    drone.state = droneState.DELIVERING;
+    let loadedMed = getMedByDroneSerialNum(drone.serialNum);
+    loadedMed.deliveryAddress = req.body.deliveryAddress;
+    updateMed(drone.serialNum);
+    updateDrone(drone);
+    //Simulate delivery time
+    setTimeout(processTimeout, process.env.DELIVERY_TIME_SECS * 1000, droneState.DELIVERED, drone);
+    return res.json(response(true, "Drone has started the delivery"));
+}
+
 const returnDrone = (req, res) => {
     const validations = validationsUtil(req, res);
     if (validations) {
@@ -76,9 +94,21 @@ const returnDrone = (req, res) => {
     return res.json(response(true, "Drone has started returning"));
 }
 
+const processTimeout = (state, drone) => {
+    drone.state = state;
+    updateDrone(drone);
+    if(state === droneState.DELIVERED){
+        deleteLoadedMed(drone.serialNum);
+        console.log("Loaded items have been delivered"); 
+    }else if(state === droneState.IDLE){
+        console.log("Drone has returned");
+    }  
+}
+
 module.exports = {
     registerDrone,
     getAvailableDrones,
     getDroneBatteryLevel,
+    deliverLoadedMed,
     returnDrone
 }

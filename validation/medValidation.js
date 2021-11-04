@@ -17,14 +17,6 @@ const medValidate = (type) => {
                     .isLength({ max: 100 }).withMessage("serialNum length should not be greater than 100 characters"),
             ];
         }
-        case "deliverLoadedMed": {
-            return [
-                check("serialNum").notEmpty().withMessage("serialNum should not be empty")
-                    .isAlphanumeric().withMessage("serialNum should be alphanumeric")
-                    .isLength({ max: 100 }).withMessage("serialNum length should not be greater than 100 characters"),
-                check("deliveryAddress").notEmpty().withMessage("deliveryAddress should not be empty")
-            ]
-        }
     }
 
 }
