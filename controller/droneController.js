@@ -97,6 +97,29 @@ const returnDrone = (req, res) => {
     return res.json(response(true, "Drone has started returning"));
 }
 
+const chargeDrone = (req, res) => {
+    const validations = validationsUtil(req, res);
+    if(validations){
+        return validations;
+    }
+    let drone = getDroneBySerialNum(req.body.serialNum);
+    if (!drone) {
+        return res.status(httpStatus.NOT_FOUND).json(response(false, "No drone exists with the serialNum "));
+    }
+    if(drone.batteryLevel === 100){
+        return res.status(httpStatus.BAD_REQUEST).json(response(false, "Drone's battery is full"))
+    }
+    let tempBatteryLevel = drone.batteryLevel;
+    drone.batteryLevel = drone.batteryLevel + Math.floor(req.body.batteryInput);
+    drone.batteryLevel = drone.batteryLevel > 100 ? 100 : drone.batteryLevel;
+    const change = drone.batteryLevel - tempBatteryLevel;
+    updateDrone(drone);
+    saveAudit("batteryLevel", createBatteryAudit(drone, change, "CHARGE"));
+    return res.json(response(true, "Drone has been charged"));
+}
+
+
+
 const dischargeBattery = (drone, totalWeight=0) =>{
     //0.001 is an assumed discharge factor
     const change = (0.001 * (drone.weight + totalWeight) * process.env.DELIVERY_TIME_SECS);
@@ -131,5 +154,6 @@ module.exports = {
     getAvailableDrones,
     getDroneBatteryLevel,
     deliverLoadedMed,
-    returnDrone
+    returnDrone,
+    chargeDrone
 }
