@@ -2,7 +2,14 @@
     "123": {
         "serialNum": "123",
         "model": "HeavyWeight",
-        "batteryLevel": 50,
+        "batteryLevel": 72,
+        "state": "IDLE",
+        "weight": 500
+    },
+    "1234": {
+        "serialNum": "1234",
+        "model": "HeavyWeight",
+        "batteryLevel": 44,
         "state": "IDLE",
         "weight": 500
     }

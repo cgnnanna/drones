@@ -7,9 +7,13 @@ const droneDb = () =>{
 const medicationDb = () =>{
     return new JSONdb(process.env.MED_DB_FILEPATH);
 }
+const auditDb = () =>{
+    return new JSONdb(process.env.AUDIT_DB_FILEPATH);
+}
 
 
 module.exports = {
     droneDb,
-    medicationDb
+    medicationDb,
+    auditDb
 }

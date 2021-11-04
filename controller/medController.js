@@ -19,6 +19,9 @@ const loadMed = (req, res) => {
         image: req.body.image
     }
     let drone = getDroneBySerialNum(req.params.serialNum);
+    if (!drone) {
+        return res.status(httpStatus.NOT_FOUND).json(response(false, "No drone exists with the serialNum "));
+    }
     if (drone.batteryLevel < 25) {
         return res.status(httpStatus.BAD_REQUEST).json(response(false, "drone's battery level is lower than 25%, please charge drone before you can use it."));
     }
@@ -36,7 +39,6 @@ const loadMed = (req, res) => {
         drone.state = droneState.LOADING;
     }
     if (drone.weight === totalWeight || req.body.isLoaded) {
-        console.log(totalWeight);
         drone.state = droneState.LOADED;
     }
     if (updateDrone(drone)) {

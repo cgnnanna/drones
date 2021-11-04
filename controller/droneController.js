@@ -4,6 +4,7 @@ const response = require("../utils/response");
 const { saveDrone, getDronesByProperty, getDroneBySerialNum, updateDrone } = require("../db/droneRepository");
 const { getMedByDroneSerialNum, deleteLoadedMed, updateMed} = require("../db/medRespository");
 const droneState = require("../utils/state");
+const { saveAudit } = require("../db/auditRepository");
 
 const registerDrone = (req, res) => {
     const validations = validationsUtil(req, res);
@@ -72,6 +73,7 @@ const deliverLoadedMed = (req, res) => {
     updateDrone(drone);
     //Simulate delivery time
     setTimeout(processTimeout, process.env.DELIVERY_TIME_SECS * 1000, droneState.DELIVERED, drone);
+    dischargeBattery(drone, loadedMed.totalWeight);
     return res.json(response(true, "Drone has started the delivery"));
 }
 
@@ -90,8 +92,27 @@ const returnDrone = (req, res) => {
     state = droneState.RETURNING;
     updateDrone(drone);
     console.log("Drone is returning");
-    setTimeout(processTimeout, process.env.DELIVERY_TIME_SECS, droneState.IDLE, drone)
+    setTimeout(processTimeout, process.env.DELIVERY_TIME_SECS * 1000, droneState.IDLE, drone);
+    dischargeBattery(drone);
     return res.json(response(true, "Drone has started returning"));
+}
+
+const dischargeBattery = (drone, totalWeight=0) =>{
+    //0.001 is an assumed discharge factor
+    const change = (0.001 * (drone.weight + totalWeight) * process.env.DELIVERY_TIME_SECS);
+    drone.batteryLevel = Math.floor(drone.batteryLevel - change);    
+    updateDrone(drone);
+    saveAudit("batteryLevel", createBatteryAudit(drone, change, "DISCHARGE"))
+}
+
+const createBatteryAudit = (drone, change, type) =>{
+    return {
+        serialNum: drone.serialNum,
+        dateTime: new Date(),
+        batteryLevel: drone.batteryLevel,
+        percentageChange: change,
+        auditType: type
+    };
 }
 
 const processTimeout = (state, drone) => {
