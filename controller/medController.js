@@ -87,5 +87,6 @@ const processTimeout = (state, drone) => {
 module.exports = {
     loadMed,
     getLoadedMed,
-    deliverLoadedMed
+    deliverLoadedMed,
+    processTimeout
 }

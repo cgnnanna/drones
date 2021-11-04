@@ -3,7 +3,7 @@
         "serialNum": "123",
         "model": "HeavyWeight",
         "batteryLevel": 50,
-        "state": "DELIVERED",
+        "state": "IDLE",
         "weight": 500
     }
 }
