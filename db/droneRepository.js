@@ -22,10 +22,7 @@ const getDronesByProperty = (property, value) => {
 }
 
 const updateDrone = (drone) => {
-    console.log(drone);
     if (db.has(drone.serialNum)) {
-        const key = drone.serialNum;
-        console.log(key);
         db.set(drone.serialNum, drone);
         return true;
     }

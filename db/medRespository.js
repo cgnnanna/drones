@@ -20,11 +20,16 @@ const updateMed = (serialNum) => {
     return false;
 }
 
+const deleteLoadedMed = (serialNum) => {
+    medDb.delete(serialNum);
+} 
+
 
 module.exports = {
     saveMed,
     getMedByDroneSerialNum, 
-    updateMed
+    updateMed,
+    deleteLoadedMed
 }
 
 

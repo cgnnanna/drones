@@ -3,7 +3,7 @@ const httpStatus = require("../utils/httpStatus");
 const response = require("../utils/response");
 const droneState = require("../utils/state");
 const { getDroneBySerialNum, updateDrone } = require("../db/droneRepository");
-const { saveMed, getMedByDroneSerialNum, updateMed } = require("../db/medRespository");
+const { saveMed, getMedByDroneSerialNum, updateMed, deleteLoadedMed } = require("../db/medRespository");
 
 
 
@@ -68,8 +68,20 @@ const deliverLoadedMed = (req, res) => {
     loadedMed.deliveryAddress = req.body.deliveryAddress;
     updateMed(drone.serialNum);
     updateDrone(drone);
-    //TODO: add countdown timer
+    //Simulate delivery time
+    setTimeout(processTimeout, process.env.DELIVERY_TIME_SECS * 1000, droneState.DELIVERED, drone);
     return res.json(response(true, "the drone has started the delivery"));
+}
+
+const processTimeout = (state, drone) => {
+    drone.state = state;
+    updateDrone(drone);
+    if(state === droneState.DELIVERED){
+        deleteLoadedMed(drone.serialNum);
+        console.log("Loaded items have been delivered"); 
+    }else if(state === droneState.IDLE){
+        console.log("Drone has returned");
+    }  
 }
 
 module.exports = {

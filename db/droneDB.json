@@ -1,0 +1,9 @@
+{
+    "123": {
+        "serialNum": "123",
+        "model": "HeavyWeight",
+        "batteryLevel": 50,
+        "state": "DELIVERED",
+        "weight": 500
+    }
+}
