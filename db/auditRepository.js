@@ -14,5 +14,6 @@ const getAudit = (name) => {
 }
 
 module.exports = {
-    saveAudit
+    saveAudit,
+    getAudit
 }
