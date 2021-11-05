@@ -5,5 +5,12 @@
         "batteryLevel": 60,
         "state": "IDLE",
         "weight": 200
+    },
+    "dronealpha": {
+        "serialNum": "dronealpha",
+        "model": "Cruiserweight",
+        "batteryLevel": 80,
+        "state": "IDLE",
+        "weight": 350
     }
 }

@@ -5,10 +5,12 @@ const medRoute = require("./route/medRoute");
 const auditRoute = require("./route/auditRoute");
 const httpStatus = require("./utils/httpStatus");
 const response = require("./utils/response");
+const morgan = require("morgan");
 
 const app = express();
 app.use(express.json());
 app.use("/static", express.static("public"));
+app.use(morgan("combined"));
 
 app.use("/drone", droneRoute);
 app.use("/med", medRoute);
