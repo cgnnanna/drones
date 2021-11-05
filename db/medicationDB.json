@@ -1,0 +1,67 @@
+{
+    "123": {
+        "meds": [
+            {
+                "name": "TTTT",
+                "weight": 10,
+                "code": "BBB",
+                "image": "localhost:3000/public\\uploads\\image-1636105787762.png"
+            },
+            {
+                "name": "TTTT",
+                "weight": 10,
+                "code": "BBB",
+                "image": "localhost:3000\\public\\uploads\\image-1636105818609.png"
+            },
+            {
+                "name": "TTTT",
+                "weight": 10,
+                "code": "BBB",
+                "image": "localhost:3000\\public\\uploads\\image-1636105851863.png"
+            },
+            {
+                "name": "TTTT",
+                "weight": 10,
+                "code": "BBB",
+                "image": "localhost:3000\\public\\uploads\\image-1636105899653.png"
+            },
+            {
+                "name": "TTTT",
+                "weight": 10,
+                "code": "BBB",
+                "image": "localhost:3000\\public\\uploads\\image-1636106080361.png"
+            },
+            {
+                "name": "TTTT",
+                "weight": 10,
+                "code": "BBB",
+                "image": "localhost:3000//public/uploads/image-1636106304078.png"
+            },
+            {
+                "name": "TTTT",
+                "weight": 10,
+                "code": "BBB",
+                "image": "localhost:3000/public/uploads/image-1636106329300.png"
+            },
+            {
+                "name": "TTTT",
+                "weight": 10,
+                "code": "BBB",
+                "image": "localhost:3000/static/uploads/image-1636106812621.png"
+            },
+            {
+                "name": "TTTT",
+                "weight": 10,
+                "code": "BBB",
+                "image": "localhost:3000/static/uploads/image-1636106847739.png"
+            },
+            {
+                "name": "TTTT",
+                "weight": 10,
+                "code": "BBB",
+                "image": "localhost:3000/static/uploads/image-1636107435502.png"
+            }
+        ],
+        "totalWeight": 100
+    }
+}

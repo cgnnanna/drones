@@ -8,6 +8,8 @@ const response = require("./utils/response");
 
 const app = express();
 app.use(express.json());
+app.use("/static", express.static("public"));
+
 app.use("/drone", droneRoute);
 app.use("/med", medRoute);
 app.use("/audit", auditRoute);

@@ -16,7 +16,7 @@ const loadMed = (req, res) => {
         name: req.body.name,
         weight: Math.floor(req.body.weight),
         code: req.body.code,
-        image: req.body.image
+        image: `${req.get("host")}/static/uploads/${req.file.filename}`
     }
     let drone = getDroneBySerialNum(req.params.serialNum);
     if (!drone) {
@@ -38,7 +38,7 @@ const loadMed = (req, res) => {
     if (drone.state === droneState.IDLE) {
         drone.state = droneState.LOADING;
     }
-    if (drone.weight === totalWeight || req.body.isLoaded) {
+    if (drone.weight === totalWeight || req.body.isLoaded=="true") {
         drone.state = droneState.LOADED;
     }
     if (updateDrone(drone)) {
