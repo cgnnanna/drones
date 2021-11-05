@@ -1,13 +1,8 @@
-## Drones
-
-[[_TOC_]]
+# Drones
 
 ---
 
-:scroll: **START**
-
-
-### Introduction
+## Introduction
 
 There is a major new technology that is destined to be a disruptive force in the field of transportation: **the drone**. Just as the mobile phone allowed developing countries to leapfrog older technologies for personal communication, the drone has the potential to leapfrog traditional transportation infrastructure.
 
@@ -15,58 +10,170 @@ Useful drone functions include delivery of small items that are (urgently) neede
 
 ---
 
-### Task description
+### Running the solution
 
-We have a fleet of **10 drones**. A drone is capable of carrying devices, other than cameras, and capable of delivering small loads. For our use case **the load is medications**.
+After cloning the app, run
 
-A **Drone** has:
-- serial number (100 characters max);
-- model (Lightweight, Middleweight, Cruiserweight, Heavyweight);
-- weight limit (500gr max);
-- battery capacity (percentage);
-- state (IDLE, LOADING, LOADED, DELIVERING, DELIVERED, RETURNING).
+```bash
+npm install
+```
 
-Each **Medication** has: 
-- name (allowed only letters, numbers, ‘-‘, ‘_’);
-- weight;
-- code (allowed only upper case letters, underscore and numbers);
-- image (picture of the medication case).
+When the process completes, start the app by running
 
-Develop a service via REST API that allows clients to communicate with the drones (i.e. **dispatch controller**). The specific communicaiton with the drone is outside the scope of this task. 
+```bash
+npm start
+```
 
-The service should allow:
-- registering a drone;
-- loading a drone with medication items;
-- checking loaded medication items for a given drone; 
-- checking available drones for loading;
-- check drone battery level for a given drone;
+in order to easily test the API, use the postman collection <https://www.getpostman.com/collections/1cec76ae6b6ee49d58de>
 
-> Feel free to make assumptions for the design approach. 
+## API Documentation
 
----
+### Register Drone
 
-### Requirements
+ An endpoint to register a new drone.
 
-While implementing your solution **please take care of the following requirements**: 
+#### **Path**
 
-#### Functional requirements
+```bash
+POST /drone/register
+```
 
-- There is no need for UI;
-- Prevent the drone from being loaded with more weight that it can carry;
-- Prevent the drone from being in LOADING state if the battery level is **below 25%**;
-- Introduce a periodic task to check drones battery levels and create history/audit event log for this.
+#### **Request**
 
----
+| Parameter    | Description                                                                                    | Mandatory | Type    |
+|--------------|------------------------------------------------------------------------------------------------|-----------|---------|
+| serialNum    | A unique identifier for the drone                                                              | True      | String  |
+| model        | The model of the drone. Could be one of  Lightweight, Middleweight, Cruiserweight, Heavyweight.| True      | String  |
+| batteryLevel | The battery level of the drone in percentage..                                                   | True      | Integer |
 
-#### Non-functional requirements
+### Get Available Drones
 
-- Input/output data must be in JSON format;
-- Your project must be buildable and runnable;
-- Your project must have a README file with build/run/test instructions (use DB that can be run locally, e.g. in-memory, via container);
-- Required data must be preloaded in the database.
-- JUnit tests are optional but advisable (if you have time);
-- Advice: Show us how you work through your commit history.
+An endpoint to get all drones in idle state.
 
----
+#### **Path**
 
-:scroll: **END** 
+```bash
+GET /drone
+```
+
+#### **Request**
+
+No request parameters.
+
+### Get Drone Battery Level
+
+ An endpoint to get a drone's battery level.
+
+#### **Path**
+
+```bash
+GET /drone/batteryLevel/:serialNum
+```
+
+#### **Request**
+
+| Parameter    | Description                                                                                    | Mandatory | Type    |
+|--------------|------------------------------------------------------------------------------------------------|-----------|---------|
+| serialNum    | The serialNum of the drone.                                                            | True      | String  |
+
+### Load Medication on Drone
+
+ An endpoint to load medication on drone.
+
+#### **Path**
+
+```bash
+POST /med/load/:serialNum
+```
+
+#### **Request**
+
+| Parameter | Description                                                     | Mandatory | Type    |
+|-----------|-----------------------------------------------------------------|-----------|---------|
+| serialNum | The serialNum of the drone to load medications on | True      | String  |
+| name      | name of the medication to be loaded                             | True      | String  |
+| weight    | weight of the medication                                        | True      | Integer |
+| code      | A code to identify the medication                              | True      | String  |
+| image     | image of the medication to be loaded                            | True      | File    |
+
+### Get Loaded Medication
+
+ An endpoint to get all loaded medications on a drone.
+
+#### **Path**
+
+```bash
+GET /med/fetch/:serialNum
+```
+
+#### **Request**
+
+| Parameter    | Description                                                                                    | Mandatory | Type    |
+|--------------|------------------------------------------------------------------------------------------------|-----------|---------|
+| serialNum    | The serialNum of the drone.                                                              | True      | String  |
+
+### Deliver Loaded Medication
+
+ An endpoint to deliver all loaded medications to a destination. For the sake of this exercise, the delivery and return time is fixed to 10s each(configurable through the .env).
+ \
+ Once the delivery is complete, the loaded medication(s) on the drone is cleared and the drone is set for next delivery once it's returned.
+
+#### **Path**
+
+```bash
+POST /drone/deliver/:serialNum
+```
+
+#### **Request**
+
+| Parameter    | Description                                                                                    | Mandatory | Type    |
+|--------------|------------------------------------------------------------------------------------------------|-----------|---------|
+| serialNum    | The serialNum of the drone, specified as a path parameter of the endpoint.                                                              | True      | String  |
+| deliveryAddress   | Address to deliver loaded medication(s), specified as a body parameter of the request.                                                            | True      | String  |
+
+### Return Drone
+
+ An endpoint to return drone after delivering loaded medications.
+
+#### **Path**
+
+```bash
+GET /drone/return/:serialNum
+```
+
+#### **Request**
+
+| Parameter    | Description                                                                                    | Mandatory | Type    |
+|--------------|------------------------------------------------------------------------------------------------|-----------|---------|
+| serialNum    | The serialNum of the drone.                                                              | True      | String  |
+
+### Charge Drone
+
+ An endpoint to charge drone. The drone will discharge each time it goes out for delivery and also when returning from the delivery. For the sake of this exercise, the discharge factor used is 0.001 per gram per second.
+
+#### **Path**
+
+```bash
+POST /drone/charge
+```
+
+#### **Request**
+
+| Parameter    | Description                                                                                    | Mandatory | Type    |
+|--------------|------------------------------------------------------------------------------------------------|-----------|---------|
+| serialNum    | The serialNum of the drone.                                                              | True      | String  |
+| batteryInput   | A number that specifies the amount of charge to add to the drone's battery level.                                                           | True      | Integer  |
+
+### Get Audit Report
+
+ An endpoint to get audit report for  battery level
+
+#### **Path**
+
+```bash
+GET /audit/battery
+```
+
+#### **Request**
+
+No request parameters.
