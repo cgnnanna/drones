@@ -1,4 +1,4 @@
-const {medicationDb} = require("./simpleJsonDbConfig");
+const {medicationDb} = require("../simpleJsonDbConfig");
 
 const medDb = medicationDb();
 

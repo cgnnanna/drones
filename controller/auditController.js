@@ -1,4 +1,4 @@
-const { getAudit } = require("../db/auditRepository");
+const { getAudit } = require("../db/audit/auditRepository");
 const response = require("../utils/response");
 
 const getAuditReport = (req, res) => {

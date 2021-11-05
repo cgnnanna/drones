@@ -1,4 +1,4 @@
-const { auditDb } = require("./simpleJsonDbConfig");
+const { auditDb } = require("../simpleJsonDbConfig");
 db = auditDb();
 
 

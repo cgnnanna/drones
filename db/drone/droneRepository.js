@@ -1,4 +1,4 @@
-const { droneDb } = require("./simpleJsonDbConfig");
+const { droneDb } = require("../simpleJsonDbConfig");
 
 const db = droneDb();
 

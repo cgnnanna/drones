@@ -1,0 +1,18 @@
+{
+    "batteryLevel": [
+        {
+            "serialNum": "dronegamma",
+            "dateTime": "2021-11-05T14:04:41.468Z",
+            "batteryLevel": 62,
+            "percentageChange": 2.1,
+            "auditType": "DISCHARGE"
+        },
+        {
+            "serialNum": "dronegamma",
+            "dateTime": "2021-11-05T14:04:57.126Z",
+            "batteryLevel": 60,
+            "percentageChange": 2,
+            "auditType": "DISCHARGE"
+        }
+    ]
+}

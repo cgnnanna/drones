@@ -1,0 +1,9 @@
+{
+    "dronegamma": {
+        "serialNum": "dronegamma",
+        "model": "middleweight",
+        "batteryLevel": 60,
+        "state": "IDLE",
+        "weight": 200
+    }
+}

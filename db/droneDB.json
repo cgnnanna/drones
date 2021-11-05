@@ -1,9 +1,0 @@
-{
-    "123": {
-        "serialNum": "123",
-        "model": "HeavyWeight",
-        "batteryLevel": 100,
-        "state": "LOADING",
-        "weight": 500
-    }
-}

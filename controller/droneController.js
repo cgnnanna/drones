@@ -1,10 +1,10 @@
 const validationsUtil = require("../utils/validationsUtil");
 const httpStatus = require("../utils/httpStatus");
 const response = require("../utils/response");
-const { saveDrone, getDronesByProperty, getDroneBySerialNum, updateDrone } = require("../db/droneRepository");
-const { getMedByDroneSerialNum, deleteLoadedMed, updateMed} = require("../db/medRespository");
+const { saveDrone, getDronesByProperty, getDroneBySerialNum, updateDrone } = require("../db/drone/droneRepository");
+const { getMedByDroneSerialNum, deleteLoadedMed, updateMed} = require("../db/med/medRespository");
 const droneState = require("../utils/state");
-const { saveAudit } = require("../db/auditRepository");
+const { saveAudit } = require("../db/audit/auditRepository");
 
 const registerDrone = (req, res) => {
     const validations = validationsUtil(req, res);
